@@ -30,6 +30,12 @@ class AssetManager
             {!! app('flux')->fluxAppearance($expression) !!}
             PHP;
         });
+
+        Blade::directive('fluxPersianFont', function ($expression) {
+            return <<<PHP
+            {!! app('flux')->fluxPersianFont($expression) !!}
+            PHP;
+        });
     }
 
     public function registerAssetRoutes()
@@ -125,6 +131,29 @@ class AssetManager
 
     window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
 </script>
+HTML;
+    }
+
+    public static function fluxPersianFont($options = [])
+    {
+        $nonce = isset($options) && isset($options['nonce']) ? ' nonce="' . $options['nonce'] . '"' : '';
+
+        return <<<HTML
+<link rel="preconnect" href="https://fonts.googleapis.com"$nonce>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin$nonce>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet"$nonce>
+<style$nonce>
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: local('Vazirmatn'), local('Vazir');
+    }
+
+    .flux-persian-calendar,
+    [dir="rtl"] .flux-persian-calendar,
+    .flux-persian-calendar * {
+        font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    }
+</style>
 HTML;
     }
 
